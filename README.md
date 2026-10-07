@@ -30,7 +30,9 @@ Choose a service date and time, then **Load timetable**. This positions all buse
 
 All trips automatically dispatch using their **planned vehicle and crew**. A physical vehicle keeps the same identifier across its daily trips. **Dispatch scheduled bus**, or an INT marker, lets an operator select an origin, route, and upcoming trip and confirm that existing assignment. Confirmation is idempotent: it records the operator action, without adding a spare vehicle, advancing the departure, or replacing resources. The previous arbitrary BUS-### creation behavior has been replaced with timetable-backed dispatch. Departed trips and unavailable assignments cannot be newly confirmed.
 
-Select a bus on the map or in the fleet list. **Apply bus speed** overrides travel speed for that vehicle (0–80 km/h); zero holds it in place. **Use timetable speed** restores each segment's published running time without teleporting the bus or erasing accrued delay. Overrides continue across that vehicle's later trips until cleared. The global clock multiplier remains independent.
+The map starts with no bus selected and every bus label fully opaque, including completed buses. Select a bus on the map or in the fleet list to keep its label opaque and fade every other bus label, including buses on the same route. Its route is highlighted with a thick colored line and white outline, drawn above other routes. Other routes fade into the background, and only the highlighted route's stops are shown. The map legend identifies the selected bus, service and direction. The highlight follows the bus when it begins a trip on a different route, and stays visible even if a different route filter is active. Route filters do not automatically select a bus or change label opacity. **Clear bus selection** restores all labels to full opacity.
+
+**Apply bus speed** overrides travel speed for the selected vehicle (0–80 km/h); zero holds it in place. **Use timetable speed** restores each segment's published running time without teleporting the bus or erasing accrued delay. Overrides continue across that vehicle's later trips until cleared. The global clock multiplier remains independent.
 
 Breakdown and unavailability freeze a bus until **Restore service**. Timed delays automatically end after the chosen number of simulation seconds. Speed changes do not resolve a disruption. Recovery continues from the held position, retains required terminal activities, and uses available layover time to recover delay. Later trips never depart before their published departure. The detail panel shows planned times, crew, projected arrival and deviation.
 
@@ -72,7 +74,26 @@ JSON responses use `Cache-Control: no-store`. Poll about once per second. ISO ti
 
 A bus includes WGS84 position, heading, `speedKph`, `speedOverride`, `publishedSpeedKph`, status, availability, `routeId`, `tripId`, planned vehicle/crew, scheduled and simulated departure/arrival times, trip progress, next stop occurrence, ETA and schedule deviation. `available` means operational and within the vehicle release window, not free for reassignment. While paused, current speed is zero; `publishedSpeedKph` still describes the segment's nominal speed. During terminal turnaround or layover, the bus reports its just-completed trip until it begins positioning/boarding for the next one.
 
-Status values: `scheduled`, `boarding`, `moving`, `alighting`, `turnaround`, `layover`, `deadheading`, `completed`, `breakdown`, `unavailable`, `delayed`, `held`. A bus remains at its final destination after completing its daily duty.
+The 12 bus states use these API values and dashboard labels:
+
+| API status | Dashboard label | Meaning |
+| --- | --- | --- |
+| `scheduled` | Scheduled | Waiting to begin boarding for its first trip. |
+| `boarding` | Boarding | At the origin, preparing for the scheduled departure. |
+| `moving` | In service | Travelling along its assigned service route. |
+| `alighting` | Alighting | At the destination, allowing passengers to leave. |
+| `turnaround` | Turnaround | Completing required terminal preparation before another trip. |
+| `layover` | Layover | Waiting between trips after turnaround is complete. |
+| `deadheading` | Terminal transfer | Moving to another terminal for its next trip. |
+| `completed` | Duty completed | Finished all assigned trips for the day and parked at the final destination. |
+| `breakdown` | Breakdown | Frozen at its current position until the disruption is resolved with **Restore service**. |
+| `unavailable` | Unavailable | Removed from service and held until the disruption is resolved with **Restore service**. |
+| `delayed` | Delayed | Temporarily held; automatically resumes when the delay expires, or can be restored manually. |
+| `held` | Held at 0 km/h | Stopped by a zero-speed override; resumes when speed is increased or timetable speed is restored. |
+
+**Pause is a simulation-wide control, not a bus state.** It freezes movement and delay countdowns while preserving each bus's status. A bus can therefore still report `moving` while the simulation is paused, with `speedKph: 0`.
+
+An unresolved disruption takes precedence over a zero-speed hold. Resolving it leaves the bus held if its speed override is still zero. The separate `available` flag is false during any disruption or zero-speed hold, or outside the vehicle's released availability window; it does not indicate that a bus is idle or free for reassignment.
 
 ```sh
 curl http://localhost:5173/api/buses
