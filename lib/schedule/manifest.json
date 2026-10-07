@@ -1,0 +1,100 @@
+{
+  "timeBasis": "published",
+  "defaultDate": "2026-10-07",
+  "defaultSeconds": 28800,
+  "dates": [
+    {
+      "date": "2026-10-05",
+      "trips": 690,
+      "vehicles": 172,
+      "routes": 36,
+      "sourceWarnings": 0,
+      "startSeconds": 19800,
+      "endSeconds": 48120
+    },
+    {
+      "date": "2026-10-06",
+      "trips": 690,
+      "vehicles": 172,
+      "routes": 36,
+      "sourceWarnings": 0,
+      "startSeconds": 19800,
+      "endSeconds": 48120
+    },
+    {
+      "date": "2026-10-07",
+      "trips": 690,
+      "vehicles": 172,
+      "routes": 36,
+      "sourceWarnings": 1,
+      "startSeconds": 19800,
+      "endSeconds": 48120
+    },
+    {
+      "date": "2026-10-08",
+      "trips": 690,
+      "vehicles": 172,
+      "routes": 36,
+      "sourceWarnings": 0,
+      "startSeconds": 19800,
+      "endSeconds": 48120
+    },
+    {
+      "date": "2026-10-09",
+      "trips": 690,
+      "vehicles": 172,
+      "routes": 36,
+      "sourceWarnings": 0,
+      "startSeconds": 19800,
+      "endSeconds": 48120
+    },
+    {
+      "date": "2026-10-12",
+      "trips": 690,
+      "vehicles": 172,
+      "routes": 36,
+      "sourceWarnings": 0,
+      "startSeconds": 19800,
+      "endSeconds": 48120
+    },
+    {
+      "date": "2026-10-13",
+      "trips": 690,
+      "vehicles": 172,
+      "routes": 36,
+      "sourceWarnings": 0,
+      "startSeconds": 19800,
+      "endSeconds": 48120
+    },
+    {
+      "date": "2026-10-14",
+      "trips": 690,
+      "vehicles": 172,
+      "routes": 36,
+      "sourceWarnings": 1,
+      "startSeconds": 19800,
+      "endSeconds": 48120
+    },
+    {
+      "date": "2026-10-15",
+      "trips": 690,
+      "vehicles": 172,
+      "routes": 36,
+      "sourceWarnings": 0,
+      "startSeconds": 19800,
+      "endSeconds": 48120
+    },
+    {
+      "date": "2026-10-16",
+      "trips": 690,
+      "vehicles": 172,
+      "routes": 36,
+      "sourceWarnings": 0,
+      "startSeconds": 19800,
+      "endSeconds": 48120
+    }
+  ],
+  "sourceSha256": "2e1e0bb2c235e793223afe224b1ab77f14acacae65daf7aef032da68720adc06",
+  "positionBasis": "Interpolated between published stop arrivals; no intermediate departure times supplied.",
+  "transferBasis": "Supplied planning allowances, positioned to finish 120 seconds before the next departure."
+}
